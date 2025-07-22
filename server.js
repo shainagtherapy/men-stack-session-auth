@@ -36,7 +36,9 @@ app.use("/auth", authController);
 
 // GET
 app.get("/", async (req, res) => {
-    res.render('index.ejs')
+    res.render('index.ejs',{
+        user: req.session.user,
+    })
 })
 
 

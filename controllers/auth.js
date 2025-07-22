@@ -36,12 +36,22 @@ router.post("/sign-in", async (req, res) => {
     }
 
     const validPassword = bcrypt.compareSync(req.body.password, userInDatabase.password);
-
     if(!validPassword) {
         return res.send("Login failed. Please try again.")
     }
 
-    res.send("Request to sign in received!")
+    req.session.user = {
+        username: userInDatabase.username,
+        _id: userInDatabase._id,
+    }
+
+    //res.send("Request to sign in received!")
+    res.redirect("/");
+})
+
+router.get("/sign-out", (req, res) => {
+    req.session.destroy()
+    res.redirect("/")
 })
 
 module.exports = router;
