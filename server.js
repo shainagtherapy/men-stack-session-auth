@@ -12,6 +12,7 @@ const session = require('express-session')
 const port = process.env.PORT ? process.env.PORT : "3000";
 
 const authController = require("./controllers/auth.js");
+const { rawListeners } = require("./models/user.js");
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -42,7 +43,13 @@ app.get("/", async (req, res) => {
 })
 
 
-
+app.get("/vip-lounge", (req, res) => {
+    if (req.session.user) {
+        res.send(`Welcome to the party ${req.session.user.username}`)
+    } else {
+        res.send("Sorry, no guests allowed.");
+    }
+})
 
 
 app.listen(port, () => {
